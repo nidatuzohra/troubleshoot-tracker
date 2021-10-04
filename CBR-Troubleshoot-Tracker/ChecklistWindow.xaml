@@ -1,0 +1,94 @@
+﻿<Window x:Class="CBR_Troubleshoot_Tracker.ChecklistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CBR_Troubleshoot_Tracker"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Edit entry" Height="525" Width="500">
+    <Window.Resources>
+        <local:ResolutionConverter x:Key="ResolutionConverter"/>
+        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:ResolutionTypes"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="0.75*"/>
+            <RowDefinition Height="1.15*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Troubleshoot Tracker" HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" FontSize="20"></Label>
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="#" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                   Margin="5" FontSize="10"/>
+            <Label Content="{Binding id}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                   Margin="5" FontSize="10" MinWidth="200"></Label>
+        </StackPanel>
+        <Button Style="{StaticResource MaterialDesignFlatAccentButton}" Grid.Row="1" Grid.Column="1" Margin="5" Name="Delete" Click="Delete_Click" 
+                HorizontalAlignment="Right">
+            <Image Source="images/bin.png"></Image>
+        </Button>
+        <StackPanel Grid.Row="2" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Date"></Label>
+                <TextBox Text="{Binding QuestionDate}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Resolution"></Label>
+                <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedIndex="{Binding ResolutionNum}" 
+                       MinWidth="100" Margin="0,0,10,0" FontSize="10"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+            <Label Content="Residency Status" FontSize="15" HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" Margin="5"></Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Viewbox Margin="30,0">
+                    <RadioButton Content="Domestic" GroupName="Residency" IsChecked="{Binding Residency}"></RadioButton>
+                </Viewbox>
+                <Viewbox Margin="30,0">
+                    <RadioButton Content="International" GroupName="Residency" IsChecked="True"></RadioButton>
+                </Viewbox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
+            <Label Content="Ladder up troubleshooting" FontSize="15" Margin="5"></Label>
+            <Viewbox HorizontalAlignment="Left" Margin="5" Height="{Binding ActualHeight, ElementName=Longest}">
+                <CheckBox Content="Have they gone through the website, video and FAQs?" IsChecked="{Binding IsInfoRead}"></CheckBox>
+            </Viewbox>
+            <Viewbox Margin="5" Name="Longest">
+                <CheckBox Content="Check for filters and pinned classes. These may cause classes to not show up." IsChecked="{Binding IsFilterUnchecked}"></CheckBox>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Left" Margin="5" Height="{Binding ActualHeight, ElementName=Longest}">
+                <CheckBox Content="Have they completed all 4 steps?" IsChecked="{Binding AreStepsCompleted}"></CheckBox>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Left" Margin="5" Height="{Binding ActualHeight, ElementName=Longest}">
+                <CheckBox Content="Consult with progress report to make sure they're taking the right courses." IsChecked="{Binding IsPRChecked}"></CheckBox>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Left" Margin="5" Height="{Binding ActualHeight, ElementName=Longest}">
+                <CheckBox Content="Transfer/fail courses - register first, then meet with SSA" IsChecked="{Binding IsSSAConsulted}"></CheckBox>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Left" Margin="5" Height="{Binding ActualHeight, ElementName=Longest}">
+                <CheckBox Content="Share screen or ask them to share it" IsChecked="{Binding IsScreenShared}"></CheckBox>
+            </Viewbox>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Label Content="Question" FontSize="15" VerticalAlignment="Center"></Label>
+            <TextBox Text="{Binding Question}" MinWidth="400"></TextBox>
+        </StackPanel>
+        <Button Grid.Row="5" Grid.Column="0" Content="Save" Name="Save" Margin="5" Click="Save_Click"></Button>
+        <Button Grid.Row="5" Grid.Column="1" Content="Reset" Name="Reset" Margin="5" Click="Reset_Click"></Button>
+    </Grid>
+</Window>
